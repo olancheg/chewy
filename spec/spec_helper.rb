@@ -21,8 +21,11 @@ require 'support/class_helpers'
 
 require 'chewy/rspec'
 
+host = ENV['ES_HOST'] || 'localhost'
+port = ENV['ES_PORT'] || 9250
+
 Chewy.settings = {
-  host: 'localhost:9250',
+  host: "#{host}:#{port}",
   wait_for_status: 'green',
   index: {
     number_of_shards: 1,
@@ -31,7 +34,7 @@ Chewy.settings = {
 }
 
 Chewy.default_field_type = 'string' if Chewy::Runtime.version < '5.0'
-# Chewy.transport_logger = Logger.new(STDERR)
+Chewy.transport_logger = Logger.new(STDERR)
 
 KEYWORD_FIELD = if Chewy::Runtime.version < '5.0'
   {type: 'string', index: 'not_analyzed'}
